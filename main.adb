@@ -1,4 +1,5 @@
 with Ada.Text_IO;       use Ada.Text_IO;
+with Ada.Command_Line;  use Ada.Command_Line;
 
 procedure Main is
 
@@ -99,8 +100,47 @@ procedure Main is
         end;            
     end;
 
+    procedure print_help is
+    begin
+        Put_Line ("Usage: collatz [Number] | [Option] [Variable...]");
+        New_Line;
+        Put_Line ("Search for numbers which take [Number] iterations to");
+        Put_Line ("reach 1 through the Collatz Iterator.");
+        New_Line;
+        Put_Line ("  Variables which can be changed are: ");
+        Put_Line ("      [Number]           The number of iterations you wish to search for.");
+        Put_Line ("                           Also the first in range of desirable iterations when");
+        Put_Line ("                           used with -t");
+        New_Line;                        
+        Put_Line ("    -l, --lower_lim      Where to start looking. Default = 5");
+        New_Line;
+        Put_Line ("    -u, --upper_lim      Where to stop looking. Default = 500");
+        New_Line;
+        Put_Line ("    -t, --upper_tgt      The last in range of desirable iterations");
+        New_Line;
+        Put_Line ("  Options:");
+        Put_Line ("    -h, --help           Display this text");
+        New_Line;
+        Put_Line ("Examples:");
+        Put_Line ("  collatz 10 -l 10 -u 650");
+        New_Line;
+        Put_Line ("    Finds the numbers 10-650 which take 10 iterations to reach 1");
+        New_Line;
+        New_Line;
+        Put_Line ("  collatz 15 --upper_tgt=20 --upper_lim=1000");
+        New_Line;
+        Put_Line ("    Finds the numbers 5-1000 which take anywhere from 15 to 20 iterations");
+        Put_Line ("    to reach 1");
+        New_Line; New_Line;
+    end print_help;
+
     arr: coll_arr := look_for (tgt_lo => 10, tgt_hi => 13);
 begin
+
+    if Argument_Count = 0 then
+        print_help;
+        return;
+    end if;
 
     declare 
         temp: Integer;
