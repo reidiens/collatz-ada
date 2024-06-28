@@ -102,35 +102,33 @@ procedure Main is
 
     procedure print_help is
     begin
-        Put_Line ("Usage: collatz [Number] | [Option] [Variable...]");
+        Put_Line ("Usage: collatz [Variable]... | [Option]");
         New_Line;
         Put_Line ("Search for numbers which take [Number] iterations to");
         Put_Line ("reach 1 through the Collatz Iterator.");
         New_Line;
         Put_Line ("  Variables which can be changed are: ");
-        Put_Line ("      [Number]           The number of iterations you wish to search for.");
+        Put_Line ("    -t, --target         The number of iterations you wish to search for.");
         Put_Line ("                           Also the first in range of desirable iterations when");
-        Put_Line ("                           used with -t");
+        Put_Line ("                           used with -T");
         New_Line;                        
         Put_Line ("    -l, --lower_lim      Where to start looking. Default = 5");
         New_Line;
         Put_Line ("    -u, --upper_lim      Where to stop looking. Default = 500");
         New_Line;
-        Put_Line ("    -t, --upper_tgt      The last in range of desirable iterations");
+        Put_Line ("    -T, --upper_tgt      The last in range of desirable iterations");
         New_Line;
         Put_Line ("  Options:");
         Put_Line ("    -h, --help           Display this text");
+        Put_Line ("    -f, --first          Show only the first number found");
         New_Line;
         Put_Line ("Examples:");
-        Put_Line ("  collatz 10 -l 10 -u 650");
+        Put_Line ("$ collatz --target=10 -l 10 -u 650");
+        Put_Line ("   Finds the numbers 10-650 which take 10 iterations to reach 1");
         New_Line;
-        Put_Line ("    Finds the numbers 10-650 which take 10 iterations to reach 1");
         New_Line;
-        New_Line;
-        Put_Line ("  collatz 15 --upper_tgt=20 --upper_lim=1000");
-        New_Line;
-        Put_Line ("    Finds the numbers 5-1000 which take anywhere from 15 to 20 iterations");
-        Put_Line ("    to reach 1");
+        Put_Line ("$ collatz -t 15 -f");
+        Put_Line ("   Finds the first number in the rande 5-500 that takes 15 iterations to reach 1");
         New_Line; New_Line;
     end print_help;
 
