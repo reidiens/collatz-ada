@@ -17,12 +17,12 @@ if [ "$?" -ne 0 ]; then
 fi
 
 
-gnatmake -eS ${src} -o collatz
+gnatmake -eS ${src}
 
 if [ "$?" -ne 0 ]; then
     exit $?;
 fi
 
-mv collatz ${HOME}/.bin/
+mv main ${HOME}/.bin/collatz
 
 rm *.ali *.o
