@@ -16,7 +16,6 @@ if [ "$?" -ne 0 ]; then
     exit $? 
 fi
 
-
 gnatmake -eS ${src}
 
 if [ "$?" -ne 0 ]; then
