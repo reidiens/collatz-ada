@@ -179,15 +179,16 @@ package body Collatz.Args is
 
     procedure print_help is
     begin
-        Put_Line ("Usage: collatz [Variable] [Number]... | [Option]");
+        Put_Line ("Usage: collatz [Number] [Variable]... | [Option]");
         New_Line;
         Put_Line ("Search for numbers which take [Number] iterations to reach 1 through the Collatz Iterator.");
         Put_Line ("[Number] is a positive non-zero integer");
         New_Line;
         Put_Line ("  Variables which can be changed are: ");
-        Put_Line ("    -t, --target         The number of iterations you wish to search for. This value is not optional");
-        Put_Line ("                           If -T is also used, this value will serve as the lower bound for the range");
-        Put_Line ("                           desirable total iterations.");
+        Put_Line ("    -t, --target         The number of iterations you wish to search for. This value is optional if a");
+        Put_Line ("                           number is specified immediately after the command. If -T is also used,");
+        Put_Line ("                           this value will serve as the lower bound for the range desirable total");
+        Put_Line ("                           iterations.");
         New_Line;                        
         Put_Line ("    -l, --lower_lim      What number to start iterating at. Default = 5");
         New_Line;
@@ -202,11 +203,13 @@ package body Collatz.Args is
         Put_Line ("    -f, --first          Show only the first number found");
         New_Line;
         Put_Line ("Examples:");
-        Put_Line ("$ collatz --target=10 -l 10 -u 650");
+        Put_Line ("$ collatz 5 --upper_lim=1000");
+        Put_Line ("   Finds all numbers 5-1000 which take 5 iterations to reach 1");
+        New_Line;
+        Put_Line ("$ collatz -l 10 -u 650 -t 10");
         Put_Line ("   Finds the numbers 10-650 which take 10 iterations to reach 1");
         New_Line;
-        New_Line;
-        Put_Line ("$ collatz -t 15 -f");
+        Put_Line ("$ collatz -t 15 --first");
         Put_Line ("   Finds the first number in the default range that takes 15 iterations to reach 1");
         New_Line;
     end print_help;
