@@ -7,16 +7,10 @@ with Collatz.Args;
 procedure Main is
 
     tgt, u_lim, l_lim : Positive;
-
     u_tgt: Natural;
 
     first: Boolean;
 begin
-
-    if Argument_Count = 0 then
-        Args.print_help;
-        return;
-    end if;
 
     if Args.arg_check (target => tgt, 
                         upper_lim => u_lim, 

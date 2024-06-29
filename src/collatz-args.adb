@@ -43,6 +43,11 @@ package body Collatz.Args is
         f_def: Boolean := False;
 
     begin
+        if Argument_Count = 0 then
+            print_help;
+            return -1;
+        end if;
+
         for I in 1..Argument_Count loop
             declare
                 arg: String := Argument (I);
