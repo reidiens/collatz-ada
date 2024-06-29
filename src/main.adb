@@ -48,6 +48,5 @@ begin
         end loop;
     end;
 
-    New_Line;
     return;
 end Main;

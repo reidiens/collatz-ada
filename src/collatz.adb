@@ -19,7 +19,9 @@ package body Collatz is
             count := count + 1;
         end loop;
 
-        if print then Put_Line (i_img (1));
+        if print then
+            Put_Line (i_img (1));
+            New_Line;
         end if;
 
         return count;

@@ -40,6 +40,7 @@ package body Collatz.Args is
         l_def: Boolean := False;
         u_def: Boolean := False;
         UT_def: Boolean := False;
+        f_def: Boolean := False;
 
     begin
         for I in 1..Argument_Count loop
@@ -51,10 +52,15 @@ package body Collatz.Args is
 
                 else 
                     if arg (arg'First) /= '-' then
-                        Put_Line ("Unknown argument: '" & arg & "'");
-                        Put_Line ("Use collatz --help to see the help message.");
-                        New_Line;
-                        return -1;
+                        if not check_num ('t', I) then
+                            Put_Line ("Unknown argument: '" & arg & "'");
+                            Put_Line ("Use collatz --help to see the help message.");
+                            New_Line;
+                            return -1;
+                        
+                        else 
+                            t_def := True;
+                        end if;
 
                     else 
                         if arg (arg'First + 1) /= '-' and arg'Length > 2 then
@@ -114,7 +120,8 @@ package body Collatz.Args is
                                 return -1;
 
                             when 'f' =>
-                                first := true;
+                                first := True;
+                                f_def := True;
 
                             when others => 
                                 Put_Line ("Unknown argument: '" & arg & "'");
@@ -144,6 +151,10 @@ package body Collatz.Args is
 
         if not UT_def then
             upper_tgt := 0;
+        end if;
+
+        if not f_def then
+            first := False;
         end if;
 
         if upper_lim < lower_lim then
