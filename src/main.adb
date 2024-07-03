@@ -25,7 +25,7 @@ begin
             val: Match := look (target => tgt, upper_lim => u_lim, lower_lim => l_lim, upper_tgt => u_tgt);
             temp: Positive;
         begin
-            Put (i_img (val(Num)) & "(" & i_img (val(Its)) & " ): ");
+            Put (i_img (val(Num)) & " (" & i_img (val(Its)) & " ): ");
             temp := iterate (val(Num), True);
         end;
         New_Line;
