@@ -120,6 +120,26 @@ package body Collatz.Args is
             end;
         end check_longarg;
 
+        procedure err_handle (err: Integer; arg: String) is 
+        begin
+            case err is
+                when -1 =>
+                    Put_Line ("Unknown argument: '" & arg & "'");
+
+                when -2 =>
+                    Put_Line ("Invalid argument: '" & arg & "'");
+        
+                when -3 =>
+                    Put_Line ("Invalid value: '" & arg & "'");
+
+                when others => null;
+            end case;
+
+            Put_Line ("Use collatz --help to see the help message");
+            New_Line;
+
+        end err_handle;
+
         skip: Boolean := False;
 
     begin
@@ -138,9 +158,7 @@ package body Collatz.Args is
                 else 
                     if arg (arg'First) /= '-' then
                         if not check_num ('t', I) then
-                            Put_Line ("Unknown argument: '" & arg & "'");
-                            Put_Line ("Use collatz --help to see the help message.");
-                            New_Line;
+                            err_handle (-1 , arg);
                             return -1;
                         
                         else 
@@ -149,18 +167,14 @@ package body Collatz.Args is
 
                     else 
                         if arg (arg'First + 1) /= '-' and arg'Length > 2 then
-                            Put_Line ("Unknown argument: '" & arg & "'");
-                            Put_Line ("Use collatz --help to see the help message."); 
-                            New_Line;
+                            err_handle (-1, arg);
                             return -1;
                         end if;
 
                         case arg (arg'First + 1) is
                             when 't' => 
                                 if not check_num('t', I + 1) then
-                                    Put_Line ("Error: '" & Argument (I + 1) & "' is unacceptable input. Numbers must be positive non-zero values");
-                                    Put_Line ("Use collatz --help to see the help message");
-                                    New_Line;
+                                    err_handle (-3, Argument (I + 1));
                                     return -1;
                                 else
                                     skip := True;
@@ -169,9 +183,7 @@ package body Collatz.Args is
 
                             when 'l' =>
                                 if not check_num('l', I + 1) then
-                                    Put_Line ("Error: '" & Argument (I + 1) & "' is unacceptable input. Numbers must be positive non-zero values");
-                                    Put_Line ("Use collatz --help to see the help message");
-                                    New_Line;
+                                    err_handle (-3, Argument (I + 1));
                                     return -1;
                                 else
                                     skip := True;
@@ -180,9 +192,7 @@ package body Collatz.Args is
 
                             when 'u' =>
                                 if not check_num('u', I + 1) then
-                                    Put_Line ("Error: '" & Argument (I + 1) & "' is unacceptable input. Numbers must be positive non-zero values");
-                                    Put_Line ("Use collatz --help to see the help message");
-                                    New_Line;
+                                    err_handle (-3, Argument (I + 1));
                                     return -1;
                                 else 
                                     skip := True;
@@ -191,9 +201,7 @@ package body Collatz.Args is
 
                             when 'T' =>
                                 if not check_num ('T', I + 1) then
-                                    Put_Line ("Error: '" & Argument (I + 1) & "' is unacceptable input. Numbers must be positive non-zero values");
-                                    Put_Line ("Use collatz --help to see the help message");
-                                    New_Line;
+                                    err_handle (-3, Argument (I + 1));
                                     return -1;
                                 else
                                     skip := True;
@@ -214,15 +222,11 @@ package body Collatz.Args is
                                 begin
                                     case temp is
                                         when -1 =>
-                                            Put_Line ("Unknown argument: '" & arg & "'");
-                                            Put_Line ("Use collatz --help to see the help message");
-                                            New_Line;
+                                            err_handle (-1, arg);
                                             return -1;
                                         
                                         when -2 =>
-                                            Put_Line ("Invalid argument: '" & arg & "'");
-                                            Put_Line ("Use collatz --help to see the help message");
-                                            New_Line;
+                                            err_handle (-2, arg);
                                             return -1;
 
                                         when 0 => null;
@@ -237,16 +241,12 @@ package body Collatz.Args is
 
                                 end;
                                 if check_longarg (arg (arg'First + 2..arg'Last)) = -1 then
-                                    Put_Line ("Unknown argument: '" & arg & "'");
-                                    Put_Line ("Use collatz --help to see the help message");
-                                    New_Line;
+                                    err_handle (-1, arg);
                                     return -1;
                                 end if;
 
                             when others => 
-                                Put_Line ("Unknown argument: '" & arg & "'");
-                                Put_Line ("Use collatz --help to see the help message");
-                                New_Line;
+                                err_handle (-1, arg);
                                 return -1;
                         end case;
                     end if;
