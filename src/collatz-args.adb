@@ -73,6 +73,10 @@ package body Collatz.Args is
                     return 'u';
                 elsif var = "upper_tgt" then    
                     return 'T';
+                elsif var = "first" then
+                    return 'f';
+                elsif var = "help" then
+                    return 'h'; 
                 else 
                     return '0';
                 end if;
@@ -109,6 +113,13 @@ package body Collatz.Args is
                         upper_tgt := Natural'Value (val);
                         UT_def := True;
                         return 0;
+
+                    when 'f' =>
+                        first := True;
+                        return 0;
+                    
+                    when 'h' =>
+                        return -3;
 
                     when others => return -1;
                 end case;
@@ -210,7 +221,7 @@ package body Collatz.Args is
 
                             when 'h' =>
                                 print_help;
-                                return -1;
+                                return 0;
 
                             when 'f' =>
                                 first := True;
@@ -229,6 +240,10 @@ package body Collatz.Args is
                                             err_handle (-2, arg);
                                             return -1;
 
+                                        when -3 =>
+                                            print_help;
+                                            return 0;
+
                                         when 0 => null;
 
                                         when others => 
@@ -238,13 +253,8 @@ package body Collatz.Args is
                                             return -1;
                                             
                                     end case;
-
                                 end;
-                                if check_longarg (arg (arg'First + 2..arg'Last)) = -1 then
-                                    err_handle (-1, arg);
-                                    return -1;
-                                end if;
-
+                            
                             when others => 
                                 err_handle (-1, arg);
                                 return -1;
