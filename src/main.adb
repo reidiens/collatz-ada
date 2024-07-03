@@ -37,7 +37,7 @@ begin
         temp: Positive;
     begin
         for I in arr'Range loop
-            Put (i_img (arr(I)(Num)) & "(" & i_img (arr(I)(Its)) & " ): ");
+            Put (i_img (arr(I)(Num)) & " (" & i_img (arr(I)(Its)) & " ): ");
             temp := iterate (arr(I)(Num), True);
         end loop;
     end;
