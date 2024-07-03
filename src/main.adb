@@ -25,10 +25,14 @@ begin
             val: Match := look (target => tgt, upper_lim => u_lim, lower_lim => l_lim, upper_tgt => u_tgt);
             temp: Positive;
         begin
-            Put (i_img (val(Num)) & " (" & i_img (val(Its)) & " ): ");
+            if u_tgt /= 0 then
+                Put (i_img (val(Num)) & " (" & i_img (val(Its)) & " ):");
+            else 
+                Put (i_img (val(Num)) & ":");
+            end if;
+
             temp := iterate (val(Num), True);
         end;
-        New_Line;
         return;
     end if;
 
@@ -37,10 +41,14 @@ begin
         temp: Positive;
     begin
         for I in arr'Range loop
-            Put (i_img (arr(I)(Num)) & " (" & i_img (arr(I)(Its)) & " ): ");
+            if u_tgt /= 0 then
+                Put (i_img (arr(I)(Num)) & " (" & i_img (arr(I)(Its)) & " ):");
+            else
+                Put (i_img (arr(I)(Num)) & ":");
+            end if;
             temp := iterate (arr(I)(Num), True);
         end loop;
     end;
-
     return;
+
 end Main;
