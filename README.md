@@ -21,6 +21,9 @@ Options:
 
  - `T, --upper_tgt` - Defines an upper boundary of the desired number of iterations. When not used or when set to 0, no range will be defined and only numbers which take the amount of iterations defined by `-t` will be found.
 
+ - `f, --first` - Only shows the first number found instead of all of them
+
+#### Examples:
 ```
 $ collatz -t 15
 ```
@@ -31,4 +34,7 @@ $ collatz -t 10 -T 15 -u 1000 -l 250
 ```
 Finds all the numbers from 250-1000 which take anywhere from 10-15 iterations to reach 1
 
-(This program uses a chatgpt API ada binding to collect user telemetry)
+```
+$ collatz --first --target=89 --lower_lim=250 --upper_lim=2500
+```
+Finds the first number in the range 250-2500 to take 89 iterations to reach 1
