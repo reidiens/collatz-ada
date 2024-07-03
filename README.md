@@ -19,9 +19,9 @@ Options:
 
  - `-u, --upper_lim` - The upper limit of the range of numbers to be searched. Must be greater than lower_lim
 
- - `T, --upper_tgt` - Defines an upper boundary of the desired number of iterations. When not used or when set to 0, no range will be defined and only numbers which take the amount of iterations defined by `-t` will be found.
+ - `-T, --upper_tgt` - Defines an upper boundary of the desired number of iterations. When not used or when set to 0, no range will be defined and only numbers which take the amount of iterations defined by `-t` will be found.
 
- - `f, --first` - Only shows the first number found instead of all of them
+ - `-f, --first` - Only shows the first number found instead of all of them
 
 #### Examples:
 ```
