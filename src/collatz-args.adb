@@ -1,7 +1,15 @@
-with Ada.Text_IO;       use Ada.Text_IO;
-with Ada.Command_Line;  use Ada.Command_Line;
+with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Command_Line;      use Ada.Command_Line;
+
 
 package body Collatz.Args is
+
+    t_def: Boolean := False;
+    l_def: Boolean := False;
+    u_def: Boolean := False;
+    UT_def: Boolean := False;
+    f_def: Boolean := False;
+
     function arg_check (target, upper_lim, lower_lim : out Positive; upper_tgt: out Natural; first: out Boolean) return Integer is
 
         function check_num (option: Character; index: Integer) return Boolean is
@@ -23,7 +31,7 @@ package body Collatz.Args is
                     return True;
                 
                 when 'T' =>
-                    upper_lim := Positive (temp);
+                    upper_tgt := Positive (temp);
                     return True;
                 
                 when others => return False;
@@ -35,12 +43,84 @@ package body Collatz.Args is
 
         end check_num;
 
+        function check_longarg (arg: String) return Integer is
+            
+            function find_eq_index return Integer is
+                count: Integer := arg'First;
+                saw_eq: Boolean := False;
+            begin
+                for I in arg'Range loop
+                    if arg (I) = '=' then 
+                        saw_eq := True;
+                        exit;
+                    end if;
+                    count := count + 1;
+                end loop;
+
+                if not saw_eq then return 1;
+                end if;
+
+                return count;
+            end find_eq_index;
+
+            function eval_var_str (var: String) return Character is
+            begin
+                if var = "target" then 
+                    return 't';
+                elsif var = "lower_lim" then 
+                    return 'l';
+                elsif var = "upper_lim" then 
+                    return 'u';
+                elsif var = "upper_tgt" then    
+                    return 'T';
+                else 
+                    return '0';
+                end if;
+            end eval_var_str;
+
+            eq_index: Integer := find_eq_index;
+
+        begin
+            if eq_index = 1 then return -2;     -- invalid argument (need eq sign)
+            end if;
+
+            declare
+                opt: String := arg (arg'First .. eq_index - 1);
+                val: String := arg (eq_index + 1 .. arg'Last);
+                var: Character := eval_var_str (opt);
+            begin
+                case var is
+                    when 't' =>
+                        target := Positive'Value (val);
+                        t_def := True;                
+                        return 0;
+       
+                    when 'l' =>
+                        lower_lim := Positive'Value (val);
+                        l_def := True;
+                        return 0;
+       
+                    when 'u' =>
+                        upper_lim := Positive'Value (val);
+                        u_def := True;
+                        return 0;
+                    
+                    when 'T' =>
+                        upper_tgt := Natural'Value (val);
+                        UT_def := True;
+                        return 0;
+
+                    when others => return -1;
+                end case;
+
+                exception
+                    when CONSTRAINT_ERROR =>
+                        return eq_index;            
+
+            end;
+        end check_longarg;
+
         skip: Boolean := False;
-        t_def: Boolean := False;
-        l_def: Boolean := False;
-        u_def: Boolean := False;
-        UT_def: Boolean := False;
-        f_def: Boolean := False;
 
     begin
         if Argument_Count = 0 then
@@ -128,6 +208,41 @@ package body Collatz.Args is
                                 first := True;
                                 f_def := True;
 
+                            when '-' =>
+                                declare
+                                    temp: Integer := check_longarg (arg (arg'First + 2..arg'Last));
+                                begin
+                                    case temp is
+                                        when -1 =>
+                                            Put_Line ("Unknown argument: '" & arg & "'");
+                                            Put_Line ("Use collatz --help to see the help message");
+                                            New_Line;
+                                            return -1;
+                                        
+                                        when -2 =>
+                                            Put_Line ("Invalid argument: '" & arg & "'");
+                                            Put_Line ("Use collatz --help to see the help message");
+                                            New_Line;
+                                            return -1;
+
+                                        when 0 => null;
+
+                                        when others => 
+                                            Put_Line ("Invalid input: '" & arg (temp + 1..arg'Last) & "' in '" & arg & "'");
+                                            Put_Line ("Use collatz --help to see the help message");
+                                            New_Line;
+                                            return -1;
+                                            
+                                    end case;
+
+                                end;
+                                if check_longarg (arg (arg'First + 2..arg'Last)) = -1 then
+                                    Put_Line ("Unknown argument: '" & arg & "'");
+                                    Put_Line ("Use collatz --help to see the help message");
+                                    New_Line;
+                                    return -1;
+                                end if;
+
                             when others => 
                                 Put_Line ("Unknown argument: '" & arg & "'");
                                 Put_Line ("Use collatz --help to see the help message");
@@ -184,12 +299,12 @@ package body Collatz.Args is
 
     procedure print_help is
     begin
-        Put_Line ("Usage: collatz [Number] [Variable]... | [Option]");
+        Put_Line ("Usage: collatz [Option] {Value}");
         New_Line;
         Put_Line ("Search for numbers which take [Number] iterations to reach 1 through the Collatz Iterator.");
-        Put_Line ("[Number] is a positive non-zero integer");
+        Put_Line ("All values must be positive integers");
         New_Line;
-        Put_Line ("  Variables which can be changed are: ");
+        Put_Line ("  Options: ");
         Put_Line ("    -t, --target         The number of iterations you wish to search for. This value is optional if a");
         Put_Line ("                           number is specified immediately after the command. If -T is also used,");
         Put_Line ("                           this value will serve as the lower bound for the range desirable total");
@@ -203,8 +318,8 @@ package body Collatz.Args is
         Put_Line ("                           or omitting this value will only search for the numbers which take the ");
         Put_Line ("                           amount of iterations specified by -t. Default = 0");
         New_Line;
-        Put_Line ("  Options:");
         Put_Line ("    -h, --help           Display this text");
+        New_Line;
         Put_Line ("    -f, --first          Show only the first number found");
         New_Line;
         Put_Line ("Examples:");
