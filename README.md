@@ -9,6 +9,7 @@ $ cd collatz-ada
 $ chmod +x build.sh
 $ ./build.sh
 ```
+If it fails, make sure you have gnatmake installed. Feel free to modify the build script to your liking. Or compile it all manually, whatever feels best. The executable is placed in ~/.bin by default.
 
 ### Usage
 
